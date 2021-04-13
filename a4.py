@@ -6,15 +6,25 @@ from datetime import timedelta
 from selenium.webdriver.support.ui import Select
 
 
+#time1 = (time.strftime("%I:%M %p")) # output format PM AM format
+time1 = (time.strftime('%H:%M:%S')) # 24 hours format timestamp
+
+#defining today's date
 date1 = datetime.date.today()
 date2 = date1.strftime("%b%e") #output format
-time1 = (time.strftime("%I:%M %p")) # output format
 today= date2[-2:].replace(' 0','')# getting the last 2 characters of the date. this data will be used to click on the calendar.
+
+#defining tmw's date
 date4= (date1 + datetime.timedelta(days=1)).strftime("%b%e")
 tmw= date4[-2:].replace(' 0','')
 
+#defining the day after tmw
+date5= (date1 + datetime.timedelta(days=2)).strftime("%b%e")
+tmw2 = date5[-2:].replace(' 0','')
+
+
 from datetime import datetime
-closing = datetime.strptime('15:00','%H:%M').strftime("%I:%M %p")
+noon = datetime.strptime('12:00','%H:%M').strftime('%l:%M:%S')
 driver = webdriver.Chrome('/Users/sarpercelebioglu/downloads/chromedriver')  # Optional argument, if not specified will search path.
 driver.maximize_window()
 
@@ -42,9 +52,14 @@ alldates=driver.find_elements_by_xpath('/html/body/div[2]/div[1]/div/table/tbody
 for dateelement in alldates:
     date=dateelement.text
     print(date)
-    if date==today:
-        dateelement.click()
-        break
+    if time1 > noon:
+        if date==tmw:
+            dateelement.click()
+            break
+    else:
+        if date==today:
+            dateelement.click()
+            break
 
 #Selecting drop off date
 pickup_date =driver.find_element_by_xpath('//*[@id="dropoff-date-box"]/div[1]').click()
@@ -52,9 +67,14 @@ alldates=driver.find_elements_by_xpath('/html/body/div[2]/div[1]/div/table/tbody
 for dateelement in alldates:
     date=dateelement.text
     print(date)
-    if date==tmw:
-        dateelement.click()
-        break
+    if time1 > noon:
+        if date==tmw2:
+            dateelement.click()
+            break
+    else:
+        if date==today:
+            dateelement.click()
+            break
 
 time.sleep(2) # let the user see the inputs are correct.
 
