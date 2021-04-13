@@ -9,8 +9,9 @@ from selenium.webdriver.support.ui import Select
 date1 = datetime.date.today()
 date2 = date1.strftime("%b%e") #output format
 time1 = (time.strftime("%I:%M %p")) # output format
-date3= date2[-2:].replace(' 0','')# getting the last 2 characters of the date. this data will be used to click on the calendar.
+today= date2[-2:].replace(' 0','')# getting the last 2 characters of the date. this data will be used to click on the calendar.
 date4= (date1 + datetime.timedelta(days=1)).strftime("%b%e")
+tmw= date4[-2:].replace(' 0','')
 
 from datetime import datetime
 closing = datetime.strptime('15:00','%H:%M').strftime("%I:%M %p")
@@ -41,7 +42,7 @@ alldates=driver.find_elements_by_xpath('/html/body/div[2]/div[1]/div/table/tbody
 for dateelement in alldates:
     date=dateelement.text
     print(date)
-    if date=='13':
+    if date==today:
         dateelement.click()
         break
 
@@ -51,7 +52,7 @@ alldates=driver.find_elements_by_xpath('/html/body/div[2]/div[1]/div/table/tbody
 for dateelement in alldates:
     date=dateelement.text
     print(date)
-    if date=='14':
+    if date==tmw:
         dateelement.click()
         break
 
